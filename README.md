@@ -12,7 +12,7 @@
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Business Impact (Google XYZ)](#business-impact-google-xyz)
+2. [Business Impact]#business-impact)
 3. [System Architecture](#system-architecture)
 4. [Repository Structure](#repository-structure)
 5. [Data Dictionary](#data-dictionary)
@@ -52,7 +52,7 @@ A multi-city Indian retailer (simulated data) records every sale but has no cons
 
 ---
 
-## Business Impact (Google XYZ)
+## Business Impact
 
 > Format: **Accomplished [X], as measured by [Y], by doing [Z].**
 
