@@ -191,7 +191,7 @@ Frequency uses `rank(method="first")` before bucketing because many customers ti
 
 ## Key SQL Query Snippets
 
-Full, runnable script: [`sql/retail_customer_analytics.sql`](sql/retail_customer_analytics.sql) (MySQL 8.0+).
+Full, runnable script: [`retail_customer_analytics_mysql.sql`](retail_customer_analytics_mysql.sql) (MySQL 8.0+).
 
 **1. Revenue by city with share and cumulative share (window functions)**
 
@@ -355,10 +355,10 @@ python src/retail_customer_analysis.py \
 **Run the SQL layer (MySQL 8.0+)**
 
 ```bash
-mysql -u <user> -p < sql/retail_customer_analytics.sql
+mysql -u <user> -p < retail_customer_analytics_mysql.sql
 ```
 
-Or open `sql/retail_customer_analytics.sql` in MySQL Workbench and run it section by section. Section 0 creates the `retail` database, the raw table and a `title_case()` helper. Load the raw CSV into `retail.transactions_raw` with the `LOAD DATA` example in the script (or Workbench's Table Data Import Wizard) before running the analysis queries.
+Or open `retail_customer_analytics_mysql.sql` in MySQL Workbench and run it section by section. Section 0 creates the `retail` database, the raw table and a `title_case()` helper. Load the raw CSV into `retail.transactions_raw` with the `LOAD DATA` example in the script (or Workbench's Table Data Import Wizard) before running the analysis queries.
 
 ---
 
