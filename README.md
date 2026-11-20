@@ -41,7 +41,7 @@ A multi-city Indian retailer (simulated data) records every sale but has no cons
 | **Method** | Data cleaning → exploratory analysis → RFM scoring → customer segmentation → Power BI dashboard |
 | **Deliverables** | Re-runnable Python pipeline, MySQL analytics layer, 3-page Power BI report |
 
-> **Data note:** the dataset is a simulated retail transaction data with intentionally injected quality issues (duplicates, nulls, casing variants, out-of-window dates). Findings demonstrate the method; they are not results from a real company.
+> **Data note:** the dataset is simulated retail transaction data with intentionally injected quality issues (duplicates, nulls, casing variants, out-of-window dates). Findings demonstrate the method; they are not results from a real company.
 
 **Business questions answered**
 
@@ -169,7 +169,6 @@ Every run writes the counts for each rule to `outputs/kpi_summary.json`.
 
 **Python and SQL use the same rules.** The SQL cleaning view applies them in the same order: the first row in file order is kept for a repeated `TransactionID`, invalid `Quantity` / `Price` rows are removed after de-duplication, and missing or blank Gender, City and ProductCategory become `Unknown`. The SQL RFM view reproduces pandas' quartile edges. Both were run on the same test data, and the cleaned rows and every customer's segment matched.
 
----
 ### Row reconciliation
 
 | Step | Rows |
@@ -204,7 +203,7 @@ Frequency uses `rank(method="first")` before bucketing because many customers ti
 
 ## Key SQL Query Snippets
 
-Full, runnable script: [`retail_customer_analytics_mysql.sql`](retail_customer_analytics_mysql.sql) (MySQL 8.0+).
+Full, runnable script: [`retail_customer_analytics_mysql.sql`](sql/retail_customer_analytics_mysql.sql) (MySQL 8.0+).
 
 **1. Revenue by city with share and cumulative share (window functions)**
 
@@ -351,10 +350,12 @@ pip install -r requirements.txt
 
 The raw file is not committed (`data/` is git-ignored).
 
-1. Download `Retail_Customer_Dataset.xlsx` <generated for this project as simulated data (see Data note)>.
-2. Save it as `data/Retail_Customer_Dataset.xlsx` (sheet name `Raw_Dataset`).
-3. Run the pipeline command below.
-4. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `\copy` example in `sql/retail_customer_analytics.sql`.
+The dataset is simulated and was generated for this project, so there is no external download. The raw file is not committed (`data/` is git-ignored).
+
+1. Place your raw file at `data/Retail_Customer_Dataset.xlsx` (sheet `Raw_Dataset`) with the 10 columns in the Data Dictionary.
+2. Run the pipeline command below.
+3. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `LOAD DATA` example in `sql/retail_customer_analytics_mysql.sql`.
+4. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `LOAD DATA` example in `retail_customer_analytics_mysql.sql`.
    
 **Run the pipeline**
 
@@ -376,10 +377,10 @@ python src/retail_customer_analysis.py \
 **Run the SQL layer (MySQL 8.0+)**
 
 ```bash
-mysql -u <user> -p < retail_customer_analytics_mysql.sql
+mysql -u <user> -p < sql/retail_customer_analytics_mysql.sql
 ```
 
-Or open `retail_customer_analytics_mysql.sql` in MySQL Workbench and run it section by section. Section 0 creates the `retail` database, the raw table and a `title_case()` helper. Load the raw CSV into `retail.transactions_raw` with the `LOAD DATA` example in the script (or Workbench's Table Data Import Wizard) before running the analysis queries.
+Or open `sql/retail_customer_analytics_mysql.sql` in MySQL Workbench and run it section by section. Section 0 creates the `retail` database, the raw table and a `title_case()` helper. Load the raw CSV into `retail.transactions_raw` with the `LOAD DATA` example in the script (or Workbench's Table Data Import Wizard) before running the analysis queries.
 
 ---
 
