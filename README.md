@@ -100,7 +100,7 @@ retail-customer-analytics/
 ├── src/
 │   └── retail_customer_analysis.py      # end-to-end pipeline (CLI)
 ├── sql/
-│   └── retail_customer_analytics.sql    # schema, cleaning view, analytics, RFM view
+│   └── retail_customer_analytics_mysql.sql   # schema, cleaning view, analytics, RFM view
 ├── dashboard/
 │   └── Retail_customer_project.pbix     # Power BI report (3 pages)
 └── docs/
@@ -120,7 +120,7 @@ retail-customer-analytics/
 | Column | Type | Description | Cleaning rule |
 |---|---|---|---|
 | `CustomerID` | text | Unique customer identifier, e.g. `CUST_00319` | Trimmed, upper-cased; rows with null dropped |
-| `Gender` | text | `Male` or `Female` | Trimmed, title-cased, `M`/`F` mapped |
+| `Gender` | text | Male, Female or Unknown | Trimmed, title-cased, `M`/`F` mapped; missing or blank values become `Unknown` |
 | `Age` | integer | Customer age in years | Outside 18–90 treated as invalid; nulls imputed with median |
 | `City` | text | City of purchase (10 cities) | Trimmed, title-cased |
 | `TransactionID` | text | Unique transaction identifier, e.g. `TXN_001397` | Trimmed, upper-cased; must be unique |
@@ -350,12 +350,11 @@ pip install -r requirements.txt
 
 The raw file is not committed (`data/` is git-ignored).
 
-The dataset is simulated and was generated for this project, so there is no external download. The raw file is not committed (`data/` is git-ignored).
+The dataset is simulated and was generated for this project, so there is no external download.
 
 1. Place your raw file at `data/Retail_Customer_Dataset.xlsx` (sheet `Raw_Dataset`) with the 10 columns in the Data Dictionary.
 2. Run the pipeline command below.
 3. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `LOAD DATA` example in `sql/retail_customer_analytics_mysql.sql`.
-4. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `LOAD DATA` example in `retail_customer_analytics_mysql.sql`.
    
 **Run the pipeline**
 
