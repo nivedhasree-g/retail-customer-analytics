@@ -12,7 +12,7 @@
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Business Impact]#business-impact)
+2. [Business Impact](#business-impact)
 3. [System Architecture](#system-architecture)
 4. [Repository Structure](#repository-structure)
 5. [Data Dictionary](#data-dictionary)
@@ -41,7 +41,7 @@ A multi-city Indian retailer (simulated data) records every sale but has no cons
 | **Method** | Data cleaning → exploratory analysis → RFM scoring → customer segmentation → Power BI dashboard |
 | **Deliverables** | Re-runnable Python pipeline, MySQL analytics layer, 3-page Power BI report |
 
-> **Data note:** the dataset is a simulated e-commerce dataset with intentionally injected quality issues (duplicates, nulls, casing variants, out-of-window dates). Findings demonstrate the method; they are not results from a real company.
+> **Data note:** the dataset is a simulated retail transaction data with intentionally injected quality issues (duplicates, nulls, casing variants, out-of-window dates). Findings demonstrate the method; they are not results from a real company.
 
 **Business questions answered**
 
@@ -86,7 +86,7 @@ flowchart LR
 3. **Analyse**: revenue by city, category, month, gender and age group.
 4. **Score**: Recency, Frequency and Monetary values are scored 1–4 and summed to an RFM score (3–12).
 5. **Segment**: High (10–12), Medium (7–9), Low (3–6).
-6. **Publish**: four-sheet workbook feeds Power BI; the SQL layer reproduces the same logic for a database environment.
+6. **Publish**: four-sheet workbook feeds Power BI; the SQL layer implements equivalent logic for a database environment.
 
 ---
 
