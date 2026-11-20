@@ -3,12 +3,9 @@
 -- Dialect : MySQL 8.0+ (needs window functions, CTEs and REGEXP_REPLACE)
 -- Layers  : raw table -> cleaning view -> analysis queries -> RFM view -> segments
 -- Notes   : * Money is INR. Run sections top to bottom; each is re-runnable.
---           * The cleaning view and RFM view mirror src/retail_customer_analysis.py rule for
---             rule: same de-duplication order, same 'Unknown' handling for text fields, and
---             the same quartile edges as pandas (see section 8). Ties are broken by file
---             order (row_id) when de-duplicating and by customer_id when ranking.
---           * MySQL has no INITCAP or PERCENTILE_CONT, so section 0 creates a title_case()
---             function and section 8 calculates the quartile edges with ROW_NUMBER.
+--           * Cleaning follows the main Python validation rules.
+--           * Repeated transaction IDs are deduplicated by keeping the first row_id.
+--           * Python separately tracks exact duplicate rows in its audit.
 -- =============================================================================
 
 
@@ -88,7 +85,7 @@ DELIMITER ;
 --    * trims, collapses spaces and title-cases text; upper-cases IDs
 --    * blank or missing Gender / City / ProductCategory -> 'Unknown'  (as in Python)
 --    * removes null keys and dates after the observation window
---    * de-duplicates on transaction_id, keeping the FIRST row in file order (row_id)
+--    * removes repeated transaction IDs, keeping the FIRST row in file order (row_id)
 --    * THEN removes invalid quantity / price (same order as Python)
 --    * out-of-range age -> median of the remaining valid ages
 --    * total_amount recomputed as quantity x price when null or off by > INR 0.01
@@ -165,7 +162,7 @@ CROSS JOIN age_stats AS a;
 
 
 -- =============================================================================
--- 2. DATA-QUALITY AUDIT  (run against the raw layer; mirrors the Python audit)
+-- 2. DATA-QUALITY AUDIT (raw-layer summary; duplicate counts differ from Python's staged audit)
 -- =============================================================================
 SELECT
     COUNT(*)                                                       AS raw_rows,
