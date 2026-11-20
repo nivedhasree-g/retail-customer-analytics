@@ -351,7 +351,7 @@ pip install -r requirements.txt
 
 The raw file is not committed (`data/` is git-ignored).
 
-1. Download `Retail_Customer_Dataset.xlsx` from <ADD YOUR SOURCE LINK HERE>.
+1. Download `Retail_Customer_Dataset.xlsx` <generated for this project as simulated data (see Data note)>.
 2. Save it as `data/Retail_Customer_Dataset.xlsx` (sheet name `Raw_Dataset`).
 3. Run the pipeline command below.
 4. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `\copy` example in `sql/retail_customer_analytics.sql`.
