@@ -170,6 +170,19 @@ Every run writes the counts for each rule to `outputs/kpi_summary.json`.
 **Python and SQL use the same rules.** The SQL cleaning view applies them in the same order: the first row in file order is kept for a repeated `TransactionID`, invalid `Quantity` / `Price` rows are removed after de-duplication, and missing or blank Gender, City and ProductCategory become `Unknown`. The SQL RFM view reproduces pandas' quartile edges. Both were run on the same test data, and the cleaned rows and every customer's segment matched.
 
 ---
+### Row reconciliation
+
+| Step | Rows |
+|:--|--:|
+| Raw transactions | 11,335 |
+| Removed: dated after 31 Dec 2024 (all dated 15 Mar 2026) | −5 |
+| Removed: duplicate rows and repeated TransactionIDs | −45 |
+| **Cleaned transactions** | **11,285** |
+
+No rows were dropped for missing keys or invalid quantity/price (0 each). Missing ages and totals were imputed or recalculated, not removed.
+
+---
+
 
 ## RFM Methodology
 
@@ -334,7 +347,15 @@ python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
+## Dataset Setup
 
+The raw file is not committed (`data/` is git-ignored).
+
+1. Download `Retail_Customer_Dataset.xlsx` from <ADD YOUR SOURCE LINK HERE>.
+2. Save it as `data/Retail_Customer_Dataset.xlsx` (sheet name `Raw_Dataset`).
+3. Run the pipeline command below.
+4. For the SQL layer, export the raw data to CSV and load it into `retail.transactions_raw` with the `\copy` example in `sql/retail_customer_analytics.sql`.
+   
 **Run the pipeline**
 
 ```bash
